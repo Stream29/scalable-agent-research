@@ -15,7 +15,7 @@ Run commands from `scalable-agent-demo/`:
 - `./gradlew clean` removes generated output.
 - `git submodule update --init --recursive` fetches the `koog` reference code after clone.
 
-Run `src/main/kotlin/Main.kt` from IntelliJ IDEA for local execution; a Gradle `run` task is not configured in this project.
+Copy `scalable-agent-demo/.env.example` to `scalable-agent-demo/.env` and set `ANTHROPIC_API_KEY` before local runs.
 
 ## Coding Style & Naming Conventions
 Use 4-space indentation and Kotlin defaults from IntelliJ. Keep packages lowercase (`ai.dify.stream...`), classes and objects in `PascalCase`, functions and properties in `camelCase`, and constants in `UPPER_SNAKE_CASE`. Prefer small files with one primary responsibility. Name files after the main type they contain, for example `AgentRunner.kt`.

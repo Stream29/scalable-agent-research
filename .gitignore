@@ -25,6 +25,9 @@ Desktop.ini
 *.swo
 *~
 
+# Environment secrets
+.env
+
 */.gradle
 */build
 */.kotlin

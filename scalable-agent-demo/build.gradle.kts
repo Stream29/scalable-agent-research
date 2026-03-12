@@ -1,4 +1,5 @@
 plugins {
+    application
     kotlin("jvm") version "2.3.0"
 }
 
@@ -13,8 +14,13 @@ repositories {
 dependencies {
     implementation("ai.koog:koog-agents:0.6.4")
     testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 }
 
 kotlin {
     jvmToolchain(21)
+}
+
+application {
+    mainClass = "ai.dify.stream.MainKt"
 }
