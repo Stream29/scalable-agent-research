@@ -1,5 +1,4 @@
 pluginManagement {
-    includeBuild("../reference-repository/koog/convention-plugin-ai")
     repositories {
         google()
         gradlePluginPortal()
@@ -18,13 +17,6 @@ dependencyResolutionManagement {
         mavenCentral()
         mavenLocal()
     }
-    versionCatalogs {
-        create("libs") {
-            from(files("../reference-repository/koog/gradle/libs.versions.toml"))
-        }
-    }
 }
 
 rootProject.name = "scalable-agent-demo"
-
-includeBuild("../reference-repository/koog")
