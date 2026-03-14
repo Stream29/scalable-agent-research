@@ -13,12 +13,14 @@ repositories {
 
 dependencies {
     implementation("ai.koog:koog-agents:0.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
+    implementation("org.slf4j:slf4j-simple:2.0.9")
     testImplementation(kotlin("test"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(24)
 }
 
 application {
