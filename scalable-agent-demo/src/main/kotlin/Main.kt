@@ -1,32 +1,25 @@
 package ai.dify.stream
 
-import ai.koog.agents.core.agent.AIAgent
-import ai.koog.agents.core.agent.functionalStrategy
-import ai.koog.agents.core.tools.ToolRegistry
-import ai.koog.agents.ext.agent.subtask
-import ai.koog.agents.snapshot.feature.withPersistence
-import ai.koog.prompt.message.Message
-
-
-val strategy = functionalStrategy<WithMessages<String>, WithMessages<String>> { (history, message) ->
-    val response = subtask<String, String>(message) { it }
-    WithMessages(getHistory(), response)
-}
+import ai.dify.stream.agent.state.AgentState
+import ai.dify.stream.agent.state.update
+import ai.koog.agents.core.tools.annotations.LLMDescription
+import ai.koog.agents.ext.tool.SayToUser
+import kotlinx.serialization.Serializable
 
 fun main() = runWithShell {
-    var history = emptyList<Message>()
+    var state = AgentState(
+        promptExecutor = promptExecutor,
+        model = agentModel,
+        llmParams = agentLlmParams,
+        tools = listOf(SayToUser),
+    )
+
     while (true) {
-        val agent = AIAgent(
-            promptExecutor = promptExecutor,
-            agentConfig = agentConfig,
-            strategy = strategy,
-            toolRegistry = ToolRegistry.EMPTY,
-        )
         print("User: ")
         val input = readln()
-        agent.withPersistence {  }
-        val (newHistory, response) = agent.runWithHistory(input, history)
-        history = newHistory
-        println("Assistant: $response")
+        state = state.update {
+            val response = runUserTask(input)
+            println("Assistant: $response")
+        }
     }
 }

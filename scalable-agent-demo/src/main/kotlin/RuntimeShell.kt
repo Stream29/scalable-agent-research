@@ -3,7 +3,6 @@ package ai.dify.stream
 import ai.koog.prompt.executor.clients.anthropic.AnthropicLLMClient
 import ai.koog.prompt.executor.clients.retry.toRetryingClient
 import ai.koog.prompt.executor.llms.SingleLLMPromptExecutor
-import ai.koog.prompt.executor.llms.all.simpleAnthropicExecutor
 import ai.koog.prompt.executor.model.PromptExecutor
 import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.CoroutineContext

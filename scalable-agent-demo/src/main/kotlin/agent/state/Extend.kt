@@ -1,0 +1,40 @@
+package ai.dify.stream.agent.state
+
+import ai.koog.prompt.dsl.Prompt
+import ai.koog.prompt.dsl.PromptBuilder
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
+
+val AgentState.prompt: Prompt
+    get() = Prompt(
+        id = "",
+        messages = history,
+        params = llmParams,
+    )
+
+var MutableAgentState.prompt: Prompt
+    get() = Prompt(
+        id = "",
+        messages = history,
+        params = llmParams,
+    )
+    set(value) {
+        history = value.messages.toMutableList()
+        llmParams = value.params
+    }
+
+fun MutableAgentState.updatePrompt(block: PromptBuilder.() -> Unit) {
+    prompt = Prompt.build(prompt = prompt, init = block)
+}
+
+
+inline fun AgentState.update(block: MutableAgentState.() -> Unit): AgentState {
+    @OptIn(ExperimentalContracts::class)
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+    val fork = forkMutable()
+    block(fork)
+    return fork.immutable()
+}
