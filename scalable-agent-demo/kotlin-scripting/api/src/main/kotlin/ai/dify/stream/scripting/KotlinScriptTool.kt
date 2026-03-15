@@ -7,11 +7,10 @@ import ai.koog.agents.core.tools.Tool
 import kotlinx.coroutines.withTimeout
 import kotlin.time.Duration.Companion.seconds
 
-@PublishedApi
-internal const val kotlinScriptToolName: String = "executeKotlinScript"
+private const val kotlinScriptToolName: String = "executeKotlinScript"
 
 @Suppress("FunctionName")
-public inline fun <reified T : ScriptContext> KotlinScriptTool(
+public fun <T : ScriptContext> KotlinScriptTool(
     scriptContext: T,
 ): Tool<KotlinScriptParams, KotlinScriptResult> = object : Tool<KotlinScriptParams, KotlinScriptResult>(
     name = kotlinScriptToolName,
