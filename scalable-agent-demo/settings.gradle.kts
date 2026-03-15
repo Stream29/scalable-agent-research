@@ -28,6 +28,9 @@ include(":kotlin-scripting:contract")
 include(":kotlin-scripting:api")
 include(":kotlin-scripting:feature")
 include(":kotlin-scripting:implementation")
+include(":local-shell:contract")
+include(":local-shell:api")
+include(":local-shell:implementation")
 include(":lite-koog")
 
 rootProject.name = "scalable-agent-demo"
