@@ -1,15 +1,21 @@
 [versions]
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 koog = "0.6.4"
 kotlinxCoroutines = "1.10.2"
 slf4j = "2.0.9"
+ivy = "2.5.3"
 
 [libraries]
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 koogAgents = { module = "ai.koog:koog-agents", version.ref = "koog" }
+kotlinMainKts = { module = "org.jetbrains.kotlin:kotlin-main-kts", version.ref = "kotlin" }
+kotlinScriptingJvmHost = { module = "org.jetbrains.kotlin:kotlin-scripting-jvm-host", version.ref = "kotlin" }
+kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinTest = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+apacheIvy = { module = "org.apache.ivy:ivy", version.ref = "ivy" }
 
 [bundles]
+kotlinScripting = ["kotlinScriptingJvmHost", "kotlinMainKts", "apacheIvy"]
 testing = ["kotlinTest", "kotlinxCoroutinesTest"]

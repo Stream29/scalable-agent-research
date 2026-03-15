@@ -8,12 +8,12 @@ import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.measureTime
 
-data class RuntimeContext(
+internal data class RuntimeContext(
     val promptExecutor: PromptExecutor,
     val coroutineContext: CoroutineContext
 ) : CoroutineContext by coroutineContext
 
-inline fun runWithShell(crossinline block: suspend RuntimeContext.() -> Unit) {
+internal inline fun runWithShell(crossinline block: suspend RuntimeContext.() -> Unit): Unit {
     measureTime {
         runBlocking {
             SingleLLMPromptExecutor(

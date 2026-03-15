@@ -5,7 +5,7 @@ import ai.dify.stream.agent.state.forkMutable
 import ai.dify.stream.agent.state.updatePrompt
 import ai.koog.agents.core.tools.Tool
 
-suspend fun AgentState.forkedSubtask(
+public suspend fun AgentState.forkedSubtask(
     message: String,
     tools: List<Tool<*, *>>? = null,
 ): String {

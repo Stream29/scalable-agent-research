@@ -9,17 +9,17 @@ import ai.koog.prompt.structure.StructuredResponse
 import ai.koog.prompt.structure.executeStructured
 import kotlinx.serialization.serializer
 
-suspend fun AgentState.requestLlm(): List<Message.Response> =
+public suspend fun AgentState.requestLlm(): List<Message.Response> =
     promptExecutor.execute(
         prompt = prompt,
         model = model,
         tools = tools.map { it.descriptor },
     )
 
-suspend fun MutableAgentState.requestLlmAndSave(): List<Message.Response> =
+public suspend fun MutableAgentState.requestLlmAndSave(): List<Message.Response> =
     requestLlm().also { history.addAll(it) }
 
-suspend inline fun <reified T> MutableAgentState.requestLlmStructured(): StructuredResponse<T> {
+public suspend inline fun <reified T> MutableAgentState.requestLlmStructured(): StructuredResponse<T> {
     return promptExecutor.executeStructured(
         prompt = Prompt(
             id = "",
@@ -31,5 +31,5 @@ suspend inline fun <reified T> MutableAgentState.requestLlmStructured(): Structu
     ).getOrThrow()
 }
 
-suspend inline fun <reified T> MutableAgentState.requestLlmStructuredAndSave(): StructuredResponse<T> =
+public suspend inline fun <reified T> MutableAgentState.requestLlmStructuredAndSave(): StructuredResponse<T> =
     requestLlmStructured<T>().also { history.add(it.message) }

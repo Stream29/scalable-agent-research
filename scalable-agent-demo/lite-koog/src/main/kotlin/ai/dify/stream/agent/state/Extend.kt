@@ -7,14 +7,14 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-val AgentState.prompt: Prompt
+public val AgentState.prompt: Prompt
     get() = Prompt(
         id = "",
         messages = history,
         params = llmParams,
     )
 
-var MutableAgentState.prompt: Prompt
+public var MutableAgentState.prompt: Prompt
     get() = Prompt(
         id = "",
         messages = history,
@@ -25,11 +25,14 @@ var MutableAgentState.prompt: Prompt
         llmParams = value.params
     }
 
-fun MutableAgentState.updatePrompt(block: PromptBuilder.() -> Unit) {
+public fun MutableAgentState.updatePrompt(block: PromptBuilder.() -> Unit): Unit {
     prompt = Prompt.build(prompt = prompt, init = block)
 }
 
-inline fun <T> MutableAgentState.withLlmParams(llmParams: LLMParams, block: MutableAgentState.() -> T): T {
+public inline fun <T> MutableAgentState.withLlmParams(
+    llmParams: LLMParams,
+    block: MutableAgentState.() -> T,
+): T {
     val oldParams = this.llmParams
     try {
         this.llmParams = llmParams
@@ -39,7 +42,7 @@ inline fun <T> MutableAgentState.withLlmParams(llmParams: LLMParams, block: Muta
     }
 }
 
-inline fun AgentState.update(block: MutableAgentState.() -> Unit): AgentState {
+public inline fun AgentState.update(block: MutableAgentState.() -> Unit): AgentState {
     @OptIn(ExperimentalContracts::class)
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)

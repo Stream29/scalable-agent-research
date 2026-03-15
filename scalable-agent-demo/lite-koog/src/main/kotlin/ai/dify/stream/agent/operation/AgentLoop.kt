@@ -9,7 +9,7 @@ import ai.koog.prompt.message.Message
 import ai.koog.prompt.params.LLMParams
 import kotlinx.serialization.serializer
 
-suspend fun MutableAgentState.resumeAgentLoopAndSave(
+public suspend fun MutableAgentState.resumeAgentLoopAndSave(
     tools: List<Tool<*, *>>? = null,
     parallel: Boolean = true,
 ): List<Message.Response> {
@@ -25,9 +25,9 @@ suspend fun MutableAgentState.resumeAgentLoopAndSave(
     }
 }
 
-suspend inline fun <reified Output> MutableAgentState.resumeAgentLoopStructuredAndSave(
+public suspend inline fun <reified Output> MutableAgentState.resumeAgentLoopStructuredAndSave(
     tools: List<Tool<*, *>>? = null,
-    finishTool: Tool<Output, *> = finishTool<Output>()
+    finishTool: Tool<Output, *> = finishTool<Output>(),
 ): Output {
     if (tools != null)
         this.tools = tools.toMutableList()

@@ -15,7 +15,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Plan(
+internal data class Plan(
     @LLMDescription(
         "将当前任务根据依赖关系拆解成若干个串行执行的步骤。" +
                 "可以并行的部分应该放在同一个步骤的多个分支里，因为步骤是串行执行的。" +
@@ -24,7 +24,7 @@ data class Plan(
     val steps: List<Step>
 ) {
     @Serializable
-    data class Step(
+    internal data class Step(
         @LLMDescription("步骤标题，简短概括步骤内容")
         val title: String,
         @LLMDescription(
@@ -35,7 +35,7 @@ data class Plan(
     )
 
     @Serializable
-    data class Task(
+    internal data class Task(
         @LLMDescription("任务标题，简短概括任务内容")
         val title: String,
         @LLMDescription("任务描述，说清楚任务需要做什么，需要达到什么状态或者产出什么")
@@ -43,10 +43,10 @@ data class Plan(
     )
 }
 
-fun Plan.Task.message(): String =
+internal fun Plan.Task.message(): String =
     "现在你只需要执行${title}这个子任务，完成后立刻返回：${description}"
 
-suspend fun MutableAgentState.runUserTask(message: String): String {
+internal suspend fun MutableAgentState.runUserTask(message: String): String {
     updatePrompt {
         user(message)
         user("请给出当前任务的拆分方案")

@@ -7,7 +7,7 @@ import ai.koog.prompt.message.Message
 import ai.koog.prompt.params.LLMParams
 
 
-fun AgentState(
+public fun AgentState(
     history: List<Message> = emptyList(),
     llmParams: LLMParams = LLMParams(),
     promptExecutor: PromptExecutor,
@@ -21,7 +21,7 @@ fun AgentState(
     tools = tools,
 )
 
-fun AgentState.forkMutable(): MutableAgentState = MutableAgentStateImpl(
+public fun AgentState.forkMutable(): MutableAgentState = MutableAgentStateImpl(
     history = history.toMutableList(),
     llmParams = llmParams,
     promptExecutor = promptExecutor,
@@ -29,7 +29,7 @@ fun AgentState.forkMutable(): MutableAgentState = MutableAgentStateImpl(
     tools = tools.toMutableList(),
 )
 
-fun AgentState.immutable(): AgentState = AgentStateImpl(
+public fun AgentState.immutable(): AgentState = AgentStateImpl(
     history = history.toList(),
     llmParams = llmParams,
     promptExecutor = promptExecutor,

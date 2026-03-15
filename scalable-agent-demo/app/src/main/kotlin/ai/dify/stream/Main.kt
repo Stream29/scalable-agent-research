@@ -2,11 +2,9 @@ package ai.dify.stream
 
 import ai.dify.stream.agent.state.AgentState
 import ai.dify.stream.agent.state.update
-import ai.koog.agents.core.tools.annotations.LLMDescription
 import ai.koog.agents.ext.tool.SayToUser
-import kotlinx.serialization.Serializable
 
-fun main() = runWithShell {
+public fun main(): Unit = runWithShell {
     var state = AgentState(
         promptExecutor = promptExecutor,
         model = agentModel,

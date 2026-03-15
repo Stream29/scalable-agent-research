@@ -14,7 +14,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.json.JsonObject
 import kotlin.coroutines.cancellation.CancellationException
 
-suspend fun AgentState.executeMultipleTools(
+public suspend fun AgentState.executeMultipleTools(
     toolCalls: List<Message.Tool.Call>,
     parallel: Boolean = true,
 ): List<ReceivedToolResult> = if (parallel) {
@@ -27,7 +27,7 @@ suspend fun AgentState.executeMultipleTools(
     toolCalls.map { executeTool(it) }
 }
 
-suspend fun MutableAgentState.executeMultipleToolsAndSave(
+public suspend fun MutableAgentState.executeMultipleToolsAndSave(
     toolCalls: List<Message.Tool.Call>,
     parallel: Boolean = true,
 ): List<ReceivedToolResult> =
@@ -39,7 +39,7 @@ suspend fun MutableAgentState.executeMultipleToolsAndSave(
 /**
  * Copied from [ai.koog.agents.core.environment.GenericAgentEnvironment.executeTool]
  */
-suspend fun AgentState.executeTool(toolCall: Message.Tool.Call): ReceivedToolResult {
+public suspend fun AgentState.executeTool(toolCall: Message.Tool.Call): ReceivedToolResult {
     val id = toolCall.id
     val toolName = toolCall.tool
     val toolArgsJson = try {
