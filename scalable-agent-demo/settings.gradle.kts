@@ -24,7 +24,10 @@ plugins {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
-include(":kotlin-script-tool")
+include(":kotlin-scripting:contract")
+include(":kotlin-scripting:api")
+include(":kotlin-scripting:feature")
+include(":kotlin-scripting:implementation")
 include(":lite-koog")
 
 rootProject.name = "scalable-agent-demo"
