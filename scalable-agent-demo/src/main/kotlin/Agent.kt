@@ -1,10 +1,14 @@
 package ai.dify.stream
 
 import ai.dify.stream.agent.operation.forkedSubtask
+import ai.dify.stream.agent.operation.requestLlmAndSave
 import ai.dify.stream.agent.operation.requestLlmStructuredAndSave
 import ai.dify.stream.agent.state.MutableAgentState
 import ai.dify.stream.agent.state.updatePrompt
+import ai.dify.stream.agent.state.withLlmParams
 import ai.koog.agents.core.tools.annotations.LLMDescription
+import ai.koog.prompt.message.Message
+import ai.koog.prompt.params.LLMParams
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -50,7 +54,7 @@ suspend fun MutableAgentState.runUserTask(message: String): String {
     val plan = requestLlmStructuredAndSave<Plan>().data
 
     for (step in plan.steps) {
-        updatePrompt { this.user("现在去执行${step.title}这个步骤") }
+        updatePrompt { user("现在去执行${step.title}这个步骤") }
 
         coroutineScope {
             step.branches.map { task ->
@@ -58,13 +62,14 @@ suspend fun MutableAgentState.runUserTask(message: String): String {
                     task to forkedSubtask(message = task.message())
                 }
             }.awaitAll().forEach { (task, response) ->
-                this@runUserTask.updatePrompt { this.user("现在去执行${task.title}这个子任务") }
-                this@runUserTask.updatePrompt { assistant(response) }
+                updatePrompt { user("现在去执行${task.title}这个子任务") }
+                updatePrompt { assistant(response) }
             }
         }
     }
-
-    val response = forkedSubtask(message)
-    updatePrompt { assistant(response) }
-    return response
+    updatePrompt { user("你可以汇报你的工作了") }
+    withLlmParams(llmParams.copy(toolChoice = LLMParams.ToolChoice.None)) {
+        val response = requestLlmAndSave()
+        return response.filterIsInstance<Message.Assistant>().single().content
+    }
 }

@@ -2,6 +2,7 @@ package ai.dify.stream.agent.state
 
 import ai.koog.prompt.dsl.Prompt
 import ai.koog.prompt.dsl.PromptBuilder
+import ai.koog.prompt.params.LLMParams
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -28,6 +29,15 @@ fun MutableAgentState.updatePrompt(block: PromptBuilder.() -> Unit) {
     prompt = Prompt.build(prompt = prompt, init = block)
 }
 
+inline fun <T> MutableAgentState.withLlmParams(llmParams: LLMParams, block: MutableAgentState.() -> T): T {
+    val oldParams = this.llmParams
+    try {
+        this.llmParams = llmParams
+        return block()
+    } finally {
+        this.llmParams = oldParams
+    }
+}
 
 inline fun AgentState.update(block: MutableAgentState.() -> Unit): AgentState {
     @OptIn(ExperimentalContracts::class)

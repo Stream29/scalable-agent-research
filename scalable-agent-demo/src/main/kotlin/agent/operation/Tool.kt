@@ -14,22 +14,10 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.json.JsonObject
 import kotlin.coroutines.cancellation.CancellationException
 
-suspend fun MutableAgentState.resumeToolLoop(parallelTools: Boolean = true): List<Message.Response> {
-    while (true) {
-        val responses = requestLlmAndSave()
-        val toolCalls = responses.filterIsInstance<Message.Tool.Call>()
-        if (toolCalls.isEmpty())
-            return responses
-
-        val toolResults = executeMultipleTools(toolCalls, parallelTools)
-        history.addAll(toolResults.map { it.toMessage() })
-    }
-}
-
 suspend fun AgentState.executeMultipleTools(
     toolCalls: List<Message.Tool.Call>,
-    parallelTools: Boolean = true,
-): List<ReceivedToolResult> = if (parallelTools) {
+    parallel: Boolean = true,
+): List<ReceivedToolResult> = if (parallel) {
     coroutineScope {
         toolCalls.map { toolCall ->
             async { executeTool(toolCall) }
@@ -39,7 +27,18 @@ suspend fun AgentState.executeMultipleTools(
     toolCalls.map { executeTool(it) }
 }
 
+suspend fun MutableAgentState.executeMultipleToolsAndSave(
+    toolCalls: List<Message.Tool.Call>,
+    parallel: Boolean = true,
+): List<ReceivedToolResult> =
+    executeMultipleTools(toolCalls, parallel).also { toolCallResults ->
+        history.addAll(toolCallResults.map { it.toMessage() })
+    }
 
+
+/**
+ * Copied from [ai.koog.agents.core.environment.GenericAgentEnvironment.executeTool]
+ */
 suspend fun AgentState.executeTool(toolCall: Message.Tool.Call): ReceivedToolResult {
     val id = toolCall.id
     val toolName = toolCall.tool
