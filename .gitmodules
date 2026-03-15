@@ -1,3 +1,6 @@
 [submodule "reference-repository/koog"]
 	path = reference-repository/koog
 	url = https://github.com/JetBrains/koog.git
+[submodule "reference-repository/Kode"]
+	path = reference-repository/Kode
+	url = git@github.com:Stream29/Kode.git

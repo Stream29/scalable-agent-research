@@ -1,0 +1,15 @@
+[versions]
+kotlin = "2.3.0"
+koog = "0.6.4"
+kotlinxCoroutines = "1.10.2"
+slf4j = "2.0.9"
+
+[libraries]
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+koogAgents = { module = "ai.koog:koog-agents", version.ref = "koog" }
+kotlinTest = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+
+[bundles]
+testing = ["kotlinTest", "kotlinxCoroutinesTest"]
