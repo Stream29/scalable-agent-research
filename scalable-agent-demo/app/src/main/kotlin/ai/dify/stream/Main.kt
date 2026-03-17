@@ -2,8 +2,8 @@ package ai.dify.stream
 
 import ai.dify.stream.agent.state.AgentState
 import ai.dify.stream.agent.state.update
-import ai.dify.stream.scripting.KotlinScriptTool
-import ai.dify.stream.shell.ShellCommandTool
+import ai.dify.stream.tool.kotlinscript.KotlinScriptTool
+import ai.dify.stream.tool.shell.ShellCommandTool
 import ai.koog.agents.ext.tool.SayToUser
 
 public fun main(): Unit = runWithShell {

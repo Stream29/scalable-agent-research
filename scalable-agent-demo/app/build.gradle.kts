@@ -4,10 +4,10 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.liteKoog)
+    implementation(project(":lite-koog"))
     implementation(libs.koogAgents)
-    implementation(projects.localShell.api)
-    implementation(projects.kotlinScripting.api)
+    implementation(project(":tool-shell-api"))
+    implementation(project(":tool-kotlin-script-api"))
     runtimeOnly(libs.slf4jSimple)
 
     testImplementation(libs.bundles.testing)
