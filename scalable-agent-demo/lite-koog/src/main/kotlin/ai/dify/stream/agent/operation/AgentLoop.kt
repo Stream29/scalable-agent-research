@@ -1,7 +1,7 @@
 package ai.dify.stream.agent.operation
 
 import ai.dify.stream.agent.state.MutableAgentState
-import ai.dify.stream.agent.state.withLlmParams
+import ai.dify.stream.agent.state.withToolChoice
 import ai.koog.agents.core.tools.Tool
 import ai.koog.agents.core.tools.annotations.InternalAgentToolsApi
 import ai.koog.agents.core.tools.asToolDescriptor
@@ -25,15 +25,12 @@ public suspend fun MutableAgentState.resumeAgentLoopAndSave(
     }
 }
 
-public suspend inline fun <reified Output> MutableAgentState.resumeAgentLoopStructuredAndSave(
-    tools: List<Tool<*, *>>? = null,
-    finishTool: Tool<Output, *> = finishTool<Output>(),
+public suspend fun <Output> MutableAgentState.resumeAgentLoopStructuredAndSave(
+    finishTool: Tool<Output, *>,
 ): Output {
-    if (tools != null)
-        this.tools = tools.toMutableList()
     this.tools.add(finishTool)
     while (true) {
-        withLlmParams(llmParams.copy(toolChoice = LLMParams.ToolChoice.Required)) {
+        withToolChoice(LLMParams.ToolChoice.Required) {
             val responses = requestLlmAndSave()
             require(responses.all { it is Message.Tool.Call })
             @Suppress("UNCHECKED_CAST")
@@ -46,9 +43,8 @@ public suspend inline fun <reified Output> MutableAgentState.resumeAgentLoopStru
     }
 }
 
-@PublishedApi
 @OptIn(InternalAgentToolsApi::class)
-internal inline fun <reified T> finishTool(): Tool<T, String> = object : Tool<T, String>(
+public inline fun <reified T> finishTool(): Tool<T, String> = object : Tool<T, String>(
     argsSerializer = serializer(),
     resultSerializer = serializer(),
     descriptor = serializer<T>().descriptor.asToolDescriptor(

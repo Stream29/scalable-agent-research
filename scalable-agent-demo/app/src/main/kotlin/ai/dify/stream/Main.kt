@@ -12,7 +12,6 @@ public fun main(): Unit = runWithShell {
         model = agentModel,
         llmParams = agentLlmParams,
         tools = listOf(
-            SayToUser,
             KotlinScriptTool,
             ShellCommandTool
         ),
